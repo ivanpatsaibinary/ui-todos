@@ -1,0 +1,22 @@
+.item > .latest-data > div {
+	width: auto !important;
+}
+
+.latest-data {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	/*justify-content: space-between;*/
+}
+
+.label-text {
+	flex-basis: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.delete-icon-container {
+	align-self: stretch;
+	background-color: #EF5350;
+}

@@ -1,0 +1,54 @@
+@keyframes fadeIn {
+	from {
+		height: 0;
+		opacity: 0;
+	}
+	to {
+		height: 72px;
+		opacity: 1;
+	}
+}
+
+@keyframes fadeInHistory {
+	from {
+		height: 0;
+		opacity: 0;
+	}
+	to {
+		height: auto;
+		opacity: 1;
+	}
+}
+
+.App {
+	text-align: center;
+	padding-top: 20vh;
+}
+
+.form {
+	max-width: 500px;
+	margin: 10% auto 0;
+}
+
+.paper-field {
+	padding: 5px 20px
+}
+
+.history {
+	margin-left: 4%;
+	animation: fadeInHistory 1s;
+
+}
+
+.hide-history {
+	display: none;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.add-form {
+	display: block;
+	animation: fadeIn .4s;
+}
