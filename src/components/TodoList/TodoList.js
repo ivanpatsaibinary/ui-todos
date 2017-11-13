@@ -1,16 +1,34 @@
 import React, { Component } from 'react';
 import Todo from '../Todo/Todo';
-import { observer } from 'mobx-react';
-import TodoStore from './../../store/TodoStore';
+import { observer, inject } from 'mobx-react';
+
+@inject((allStores) => ({
+	TodoStore: allStores.TodoStore
+}))
 
 @observer
 class TodoList extends Component {
-	render () {
-		console.log(this.props.TodoStore);
+	constructor (props) {
+		super(props);
+		this.renderTodos = this.renderTodos.bind(this);
+	}
 
+	componentWillMount () {
+		this.props.TodoStore.fetchTodos();
+	}
+
+	renderTodos () {
+		const { todos } = this.props.TodoStore;
+		return todos.map((item, index) => {
+			return <Todo key={ index } data={ item } />;
+		});
+	}
+
+	render () {
+		console.log(this.props);
 		return (
 			<div className='todo-list-container'>
-				<Todo />
+				{ this.renderTodos() }
 			</div>
 		);
 	}

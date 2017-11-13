@@ -1,8 +1,48 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
+import axios from 'axios';
 
 class TodoStore {
-	@observable todos = [{ name: 'todo 1' }, { name: 'todo 2' }, { name: 'todo 3' }];
+	@observable todos = [];
+	@observable activeTodoId;
+
+	@action.bound
+	fetchTodos () {
+		axios.get('https://stormy-castle-67867.herokuapp.com/api/Todos').then((res) => {
+			console.log(res);
+			this.todos = [...res.data];
+		});
+	}
+
+	@action.bound
+	addTodo (name) {
+		axios.post('https://stormy-castle-67867.herokuapp.com/api/Todos', { name }).then((res) => {
+			console.log(res);
+			this.fetchTodos();
+		});
+	}
+
+	@action.bound
+	deleteTodo (id) {
+		axios.delete('https://stormy-castle-67867.herokuapp.com/api/Todos/' + id).then((res) => {
+			console.log(res);
+			this.fetchTodos();
+		});
+	}
+
+	@action.bound
+	updateTodo (id, name, completed) {
+		axios.put('https://stormy-castle-67867.herokuapp.com/api/Todos/' + id, { id, name, completed }).then((res) => {
+			console.log(res);
+			this.fetchTodos();
+		});
+	}
+
+	@action.bound
+	setActiveTodoId (id) {
+		this.activeTodoId = id;
+	}
 }
+
 
 let store = new TodoStore();
 
