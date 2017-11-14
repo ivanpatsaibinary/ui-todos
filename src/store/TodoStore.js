@@ -23,7 +23,7 @@ class TodoStore {
 
 	@action.bound
 	setRange () {
-		this.skip = this.limit;
+		this.skip += this.limit;
 		this.fetchTodos();
 	}
 
