@@ -4,8 +4,6 @@ import axios from 'axios';
 
 class TodoHistory {
 	@observable todoHistory = [];
-	@observable activeHistoryId;
-	@observable showHistory;
 
 	@action.bound
 	fetchTodoHistory (id) {
@@ -14,12 +12,6 @@ class TodoHistory {
 			this.todoHistory = [...res.data];
 		});
 	}
-
-	@action.bound
-	setActiveHistoryId (id) {
-		this.activeHistoryId = id;
-	}
-
 }
 
 let store = new TodoHistory();

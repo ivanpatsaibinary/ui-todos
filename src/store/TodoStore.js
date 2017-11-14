@@ -5,47 +5,48 @@ class TodoStore {
 	@observable todos = [];
 	@observable activeTodoId;
 	@observable limit = 2;
-	@observable skip = 0;
 	@observable btnDisabled = false;
+	@observable addFormDisabled = false;
+	@observable showEditForm = false;
+	@observable showHistory = false;
 
 	@action.bound
-	fetchTodos (update) {
-		//todo fix fetch data after update, delete and remove
-		if (!update) {
-			this.limit = 2;
-			if (!this.todos.length) {
-				this.skip = 0;
-			}
-		}
-		console.log(this.skip, this.limit);
+	fetchTodos () {
 		axios.get('https://stormy-castle-67867.herokuapp.com/api/Todos', {
 			params: {
 				filter: {
-					limit: this.limit,
-					skip: this.skip
+					limit: this.limit
 				}
 			}
 		}).then((res) => {
-			this.todos = update ? [...res.data] : [...this.todos, ...res.data];
+			this.todos = [...res.data];
 		});
+	}
+
+	@action.bound
+	changeEditFormState (state = true) {
+		this.showEditForm = state;
+	}
+
+	@action.bound
+	changeHistoryState (state = true) {
+		this.showHistory = state;
 	}
 
 	@action.bound
 	setRange () {
-		this.skip += this.limit;
+		this.limit += 2;
 		this.fetchTodos();
-	}
-
-	setUpdatedRange () {
-		this.limit = this.skip + this.limit;
-		this.skip = 0;
 	}
 
 	@action.bound
 	addTodo (name) {
+		this.addFormDisabled = true;
 		axios.post('https://stormy-castle-67867.herokuapp.com/api/Todos', { name }).then((res) => {
 			this.todos.unshift(res.data);
+			this.addFormDisabled = false;
 		});
+		this.limit += 1;
 	}
 
 	@action.bound
@@ -57,6 +58,7 @@ class TodoStore {
 			this.todos.splice(objIndex, 1);
 			this.btnDisabled = false;
 		});
+		this.limit -= 1;
 	}
 
 	@action.bound
@@ -65,6 +67,7 @@ class TodoStore {
 			console.log(res);
 			const objIndex = this.todos.findIndex(item => id === item.id);
 			this.todos[objIndex] = { ...res.data };
+			console.log(this.todos);
 		});
 	}
 
