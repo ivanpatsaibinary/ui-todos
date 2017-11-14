@@ -5,6 +5,7 @@ class TodoStore {
 	@observable todos = [];
 	@observable activeTodoId;
 	@observable limit = 2;
+	@observable skip = 0;
 	@observable btnDisabled = false;
 	@observable addFormDisabled = false;
 	@observable showEditForm = false;
@@ -13,15 +14,18 @@ class TodoStore {
 	@observable inputValue = '';
 
 	@action.bound
-	fetchTodos () {
+	fetchTodos (limit) {
+		console.log(this.skip, this.limit, this.skip, this.skip % 2, !!(this.skip % 2));
+
 		axios.get('https://stormy-castle-67867.herokuapp.com/api/Todos', {
 			params: {
 				filter: {
-					limit: this.limit
+					limit: limit ? limit : this.limit,
+					skip: this.skip
 				}
 			}
 		}).then((res) => {
-			this.todos = [...res.data];
+			this.todos = [...this.todos, ...res.data];
 		});
 	}
 
@@ -47,7 +51,14 @@ class TodoStore {
 
 	@action.bound
 	setRange () {
-		this.limit += 2;
+		//todo fix function to return correct skip and limit
+		if (this.skip && !!(this.skip % 2)) {
+			this.limit = 1;
+			this.skip += 2;
+		} else {
+			this.limit = 2;
+			this.skip += 2;
+		}
 		this.fetchTodos();
 	}
 
@@ -70,7 +81,7 @@ class TodoStore {
 			this.todos.splice(objIndex, 1);
 			this.btnDisabled = false;
 		});
-		this.limit -= 1;
+		this.skip -= 1;
 	}
 
 	@action.bound

@@ -1,3 +1,5 @@
+//todo update todohistory after todo update
+//todo remove todoHistory after click on other todo item
 import React, { Component } from 'react';
 import IconButton from 'material-ui/IconButton';
 import Delete from 'material-ui/svg-icons/action/delete';
