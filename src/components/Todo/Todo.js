@@ -3,10 +3,10 @@ import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import Delete from 'material-ui/svg-icons/action/delete';
 import Checkbox from 'material-ui/Checkbox';
+import { inject, observer } from 'mobx-react';
 
 import './todo.css';
 import TodoHistoryList from '../TodoHistoryList/TodoHistoryList';
-import { inject, observer } from 'mobx-react';
 
 @inject((allStores) => ({
 	todos: allStores.TodoStore.todos,
@@ -24,15 +24,6 @@ import { inject, observer } from 'mobx-react';
 
 @observer
 class Todo extends Component {
-
-	componentWillMount () {
-		const { completed, name } = this.props.data;
-		this.setState({
-			checkboxValue: completed,
-			inputValue: name
-		});
-	}
-
 	handleSubmit (e) {
 		const { updateTodo, data: { id, completed, name }, changeEditFormState } = this.props;
 		if (e) e.preventDefault();
@@ -95,7 +86,8 @@ class Todo extends Component {
 								<IconButton
 									onClick={ () => {
 										setActiveTodoId(id);
-										deleteTodo(id);
+										changeHistoryState(false);
+										deleteTodo();
 									} }
 									disabled={ btnDisabled && isActive }
 								>
@@ -111,7 +103,6 @@ class Todo extends Component {
 	}
 
 	render () {
-
 		return (
 			<div className='item'>
 				{ this.renderTodo.call(this) }

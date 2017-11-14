@@ -4,47 +4,40 @@ import TextField from 'material-ui/TextField';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import Add from 'material-ui/svg-icons/content/add';
+import Clear from 'material-ui/svg-icons/content/clear';
 import Paper from 'material-ui/Paper';
 import './App.css';
 import TodoList from './components/TodoList/TodoList';
 import { observer, inject } from 'mobx-react';
 
 @inject((allStores) => ({
-	addTodo: allStores.TodoStore.addTodo
+	addTodo: allStores.TodoStore.addTodo,
+	inputValue: allStores.TodoStore.inputValue,
+	setInputValue: allStores.TodoStore.setInputValue,
+	showAddForm: allStores.TodoStore.showAddForm,
+	changeAddFormState: allStores.TodoStore.changeAddFormState
 }))
 
 @observer
 class App extends Component {
-	constructor (props) {
-		super(props);
-		this.state = {
-			showAddForm: false,
-			inputValue: ''
-		};
-	}
-
 	handleSubmit (e) {
 		e.preventDefault();
-		const { inputValue } = this.state;
-		console.log(e.target);
-		this.props.addTodo(inputValue);
-		this.setState({ inputValue: '' });
+		const { addTodo } = this.props;
+		addTodo();
 	}
 
 	render () {
-		const { showAddForm, inputValue } = this.state;
-		console.log(this.props);
+		const { inputValue, setInputValue, showAddForm, changeAddFormState } = this.props;
 		return (
 			<MuiThemeProvider className='App'>
 				<div className='form'>
 					<AppBar
 						iconElementRight={ <IconButton
 							onClick={ () => {
-								this.setState({ showAddForm: true });
-								console.log('click', this.state);
+								changeAddFormState(!showAddForm);
 							} }
 						>
-							<Add />
+							{ showAddForm ? <Clear /> : <Add /> }
 						</IconButton> }
 						showMenuIconButton={ false }
 					/>
@@ -61,7 +54,7 @@ class App extends Component {
 								className={ `add-form ${showAddForm ? '' : 'hidden'}` }
 								value={ inputValue }
 								onChange={ (e) => {
-									this.setState({ inputValue: e.target.value });
+									setInputValue(e.target.value);
 								} }
 							/>
 						</form>

@@ -8,7 +8,9 @@ class TodoStore {
 	@observable btnDisabled = false;
 	@observable addFormDisabled = false;
 	@observable showEditForm = false;
+	@observable showAddForm = false;
 	@observable showHistory = false;
+	@observable inputValue = '';
 
 	@action.bound
 	fetchTodos () {
@@ -29,8 +31,18 @@ class TodoStore {
 	}
 
 	@action.bound
+	changeAddFormState (state = true) {
+		this.showAddForm = state;
+	}
+
+	@action.bound
 	changeHistoryState (state = true) {
 		this.showHistory = state;
+	}
+
+	@action.bound
+	setInputValue (value) {
+		this.inputValue = value;
 	}
 
 	@action.bound
@@ -40,9 +52,9 @@ class TodoStore {
 	}
 
 	@action.bound
-	addTodo (name) {
+	addTodo () {
 		this.addFormDisabled = true;
-		axios.post('https://stormy-castle-67867.herokuapp.com/api/Todos', { name }).then((res) => {
+		axios.post('https://stormy-castle-67867.herokuapp.com/api/Todos', { name: this.inputValue }).then((res) => {
 			this.todos.unshift(res.data);
 			this.addFormDisabled = false;
 		});
@@ -50,11 +62,11 @@ class TodoStore {
 	}
 
 	@action.bound
-	deleteTodo (id) {
+	deleteTodo () {
 		this.btnDisabled = true;
-		axios.delete('https://stormy-castle-67867.herokuapp.com/api/Todos/' + id).then((res) => {
+		axios.delete('https://stormy-castle-67867.herokuapp.com/api/Todos/' + this.activeTodoId).then((res) => {
 			//todo update to use Sets
-			const objIndex = this.todos.findIndex(item => id === item.id);
+			const objIndex = this.todos.findIndex(item => this.activeTodoId === item.id);
 			this.todos.splice(objIndex, 1);
 			this.btnDisabled = false;
 		});
