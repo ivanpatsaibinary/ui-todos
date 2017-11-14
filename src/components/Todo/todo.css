@@ -1,3 +1,8 @@
+.item {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
 .item > .latest-data > div {
 	width: auto !important;
 }
@@ -16,7 +21,11 @@
 	justify-content: space-between;
 }
 
+.label-text > p {
+	cursor: pointer;
+}
+
 .delete-icon-container {
 	align-self: stretch;
-	background-color: #EF5350;
+	background-color: #EF5350 !important;
 }

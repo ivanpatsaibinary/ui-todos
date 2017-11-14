@@ -1,0 +1,10 @@
+.history-item-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-right: 15%;
+}
+
+.history-item-container > .delete-icon-container {
+	margin: 5px 0 5px 20px;
+}

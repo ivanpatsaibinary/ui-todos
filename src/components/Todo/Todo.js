@@ -7,6 +7,7 @@ import { inject, observer } from 'mobx-react';
 
 import './todo.css';
 import TodoHistoryList from '../TodoHistoryList/TodoHistoryList';
+import { Divider } from 'material-ui';
 
 @inject((allStores) => ({
 	todos: allStores.TodoStore.todos,
@@ -96,7 +97,8 @@ class Todo extends Component {
 							</div>
 						</div>
 					</div>,
-					(showHistory && isActive) && <TodoHistoryList key='todo-history' todoId={ id } />
+					(showHistory && isActive) ? <TodoHistoryList key='todo-history' todoId={ id } /> :
+						<Divider key={ `divider-${id}` } />
 				]
 			);
 		}
