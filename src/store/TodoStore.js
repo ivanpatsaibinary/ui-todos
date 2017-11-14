@@ -6,9 +6,11 @@ class TodoStore {
 	@observable activeTodoId;
 	@observable limit = 2;
 	@observable skip = 0;
+	@observable btnDisabled = false;
 
 	@action.bound
 	fetchTodos (update) {
+		//todo fix fetch data after update, delete and remove
 		if (!update) {
 			this.limit = 2;
 			if (!this.todos.length) {
@@ -42,24 +44,27 @@ class TodoStore {
 	@action.bound
 	addTodo (name) {
 		axios.post('https://stormy-castle-67867.herokuapp.com/api/Todos', { name }).then((res) => {
-			this.setUpdatedRange();
-			this.fetchTodos(true);
+			this.todos.unshift(res.data);
 		});
 	}
 
 	@action.bound
 	deleteTodo (id) {
+		this.btnDisabled = true;
 		axios.delete('https://stormy-castle-67867.herokuapp.com/api/Todos/' + id).then((res) => {
-			this.setUpdatedRange();
-			this.fetchTodos(true);
+			//todo update to use Sets
+			const objIndex = this.todos.findIndex(item => id === item.id);
+			this.todos.splice(objIndex, 1);
+			this.btnDisabled = false;
 		});
 	}
 
 	@action.bound
 	updateTodo (id, name, completed) {
 		axios.put('https://stormy-castle-67867.herokuapp.com/api/Todos/' + id, { id, name, completed }).then((res) => {
-			this.setUpdatedRange();
-			this.fetchTodos(true);
+			console.log(res);
+			const objIndex = this.todos.findIndex(item => id === item.id);
+			this.todos[objIndex] = { ...res.data };
 		});
 	}
 

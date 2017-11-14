@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 	deleteTodo: allStores.TodoStore.deleteTodo,
 	updateTodo: allStores.TodoStore.updateTodo,
 	setActiveTodoId: allStores.TodoStore.setActiveTodoId,
+	btnDisabled: allStores.TodoStore.btnDisabled,
 	activeTodoId: allStores.TodoStore.activeTodoId,
 	activeHistoryId: allStores.TodoHistoryStore.activeHistoryId,
 	setActiveHistoryId: allStores.TodoHistoryStore.setActiveHistoryId
@@ -62,7 +63,7 @@ class Todo extends Component {
 
 	renderTodo () {
 		const { inputValue, showEditForm, checkboxValue } = this.state;
-		const { data: { name, id }, deleteTodo, activeTodoId, setActiveTodoId, setActiveHistoryId, activeHistoryId } = this.props;
+		const { data: { name, id }, deleteTodo, activeTodoId, setActiveTodoId, setActiveHistoryId, activeHistoryId, btnDisabled } = this.props;
 		if (showEditForm && id === activeTodoId) {
 			return (
 				<form onSubmit={ this.handleSubmit.bind(this) }>
@@ -117,8 +118,10 @@ class Todo extends Component {
 							<div className='delete-icon-container'>
 								<IconButton
 									onClick={ () => {
+										setActiveTodoId(id);
 										deleteTodo(id);
 									} }
+									disabled={ btnDisabled && id === activeTodoId }
 								>
 									<Delete color='#FAFAFA' />
 								</IconButton>
