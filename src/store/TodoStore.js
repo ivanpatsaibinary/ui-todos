@@ -8,7 +8,14 @@ class TodoStore {
 	@observable skip = 0;
 
 	@action.bound
-	fetchTodos () {
+	fetchTodos (update) {
+		if (!update) {
+			this.limit = 2;
+			if (!this.todos.length) {
+				this.skip = 0;
+			}
+		}
+		console.log(this.skip, this.limit);
 		axios.get('https://stormy-castle-67867.herokuapp.com/api/Todos', {
 			params: {
 				filter: {
@@ -17,7 +24,7 @@ class TodoStore {
 				}
 			}
 		}).then((res) => {
-			this.todos = [...this.todos, ...res.data];
+			this.todos = update ? [...res.data] : [...this.todos, ...res.data];
 		});
 	}
 
@@ -27,24 +34,32 @@ class TodoStore {
 		this.fetchTodos();
 	}
 
+	setUpdatedRange () {
+		this.limit = this.skip + this.limit;
+		this.skip = 0;
+	}
+
 	@action.bound
 	addTodo (name) {
 		axios.post('https://stormy-castle-67867.herokuapp.com/api/Todos', { name }).then((res) => {
-			this.fetchTodos();
+			this.setUpdatedRange();
+			this.fetchTodos(true);
 		});
 	}
 
 	@action.bound
 	deleteTodo (id) {
 		axios.delete('https://stormy-castle-67867.herokuapp.com/api/Todos/' + id).then((res) => {
-			this.fetchTodos();
+			this.setUpdatedRange();
+			this.fetchTodos(true);
 		});
 	}
 
 	@action.bound
 	updateTodo (id, name, completed) {
 		axios.put('https://stormy-castle-67867.herokuapp.com/api/Todos/' + id, { id, name, completed }).then((res) => {
-			this.fetchTodos();
+			this.setUpdatedRange();
+			this.fetchTodos(true);
 		});
 	}
 
