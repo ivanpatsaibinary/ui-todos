@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Todo from '../Todo/Todo';
 import { observer, inject } from 'mobx-react';
+import { FloatingActionButton } from 'material-ui';
+import Loop from 'material-ui/svg-icons/av/loop';
 
 @inject((allStores) => ({
-	TodoStore: allStores.TodoStore
+	TodoStore: allStores.TodoStore,
+	setRange: allStores.TodoStore.setRange
 }))
 
 @observer
@@ -25,10 +28,17 @@ class TodoList extends Component {
 	}
 
 	render () {
-		console.log(this.props);
+		const { setRange } = this.props;
 		return (
 			<div className='todo-list-container'>
 				{ this.renderTodos() }
+				<FloatingActionButton
+					onClick={ () => {
+						setRange();
+					} }
+				>
+					<Loop />
+				</FloatingActionButton>
 			</div>
 		);
 	}

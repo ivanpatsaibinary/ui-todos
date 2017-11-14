@@ -1,21 +1,21 @@
 @keyframes fadeIn {
 	from {
-		height: 0;
+		min-height: 0;
 		opacity: 0;
 	}
 	to {
-		height: 72px;
+		max-height: 100px;
 		opacity: 1;
 	}
 }
 
 @keyframes fadeInHistory {
 	from {
-		height: 0;
+		max-height: 0;
 		opacity: 0;
 	}
 	to {
-		height: auto;
+		max-height: 500px;
 		opacity: 1;
 	}
 }
@@ -36,6 +36,7 @@
 
 .history {
 	margin-left: 4%;
+	animation: fadeInHistory 2s;
 
 }
 
