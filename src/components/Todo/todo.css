@@ -1,6 +1,9 @@
+.todo-list-container > div:last-child {
+	margin-top: 15px;
+}
+
 .item {
 	margin-top: 5px;
-	margin-bottom: 5px;
 }
 
 .item > .latest-data > div {
@@ -11,6 +14,7 @@
 	width: 100%;
 	display: flex;
 	align-items: center;
+	margin-bottom: 5px;
 	/*justify-content: space-between;*/
 }
 

@@ -51,14 +51,7 @@ class TodoStore {
 
 	@action.bound
 	setRange () {
-		//todo fix function to return correct skip and limit
-		if (this.skip && !!(this.skip % 2)) {
-			this.limit = 1;
-			this.skip += 2;
-		} else {
-			this.limit = 2;
-			this.skip += 2;
-		}
+		this.skip += 2;
 		this.fetchTodos();
 	}
 
@@ -68,8 +61,8 @@ class TodoStore {
 		axios.post('https://stormy-castle-67867.herokuapp.com/api/Todos', { name: this.inputValue }).then((res) => {
 			this.todos.unshift(res.data);
 			this.addFormDisabled = false;
+			this.inputValue = '';
 		});
-		this.limit += 1;
 	}
 
 	@action.bound
@@ -86,7 +79,11 @@ class TodoStore {
 
 	@action.bound
 	updateTodo (id, name, completed) {
-		axios.put('https://stormy-castle-67867.herokuapp.com/api/Todos/' + id, { id, name, completed }).then((res) => {
+		axios.patch('https://stormy-castle-67867.herokuapp.com/api/Todos/' + id, {
+			id,
+			name,
+			completed
+		}).then((res) => {
 			console.log(res);
 			const objIndex = this.todos.findIndex(item => id === item.id);
 			this.todos[objIndex] = { ...res.data };
