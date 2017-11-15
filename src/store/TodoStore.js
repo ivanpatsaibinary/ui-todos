@@ -1,6 +1,8 @@
 import { observable, action } from 'mobx';
 import axios from 'axios';
 
+//todo add filter as is on server after update, delete, create, checbox change
+
 class TodoStore {
 	@observable todos = [];
 	@observable activeTodoId;
@@ -77,6 +79,7 @@ class TodoStore {
 		this.skip -= 1;
 	}
 
+	//todo update should not create new history item if checkbox changes state
 	@action.bound
 	updateTodo (id, name, completed) {
 		axios.patch('https://stormy-castle-67867.herokuapp.com/api/Todos/' + id, {
