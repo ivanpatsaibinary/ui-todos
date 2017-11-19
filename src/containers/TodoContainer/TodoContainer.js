@@ -65,6 +65,7 @@ class TodoContainer extends Component {
 			return (
 				[
 					<Todo
+						key={id}
 						name={ name }
 						completed={ this.completed }
 						id={ id }

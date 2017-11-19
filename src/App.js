@@ -12,21 +12,23 @@ import Header from './components/Header';
 	showAddForm: allStores.TodoStore.showAddForm,
 	toggleShowAddFrom: allStores.TodoStore.toggleShowAddFrom
 }))
-
+//todo remove empty div if devtools is absent
 @observer
 class App extends Component {
 
 	render () {
 		return (
 			<MuiThemeProvider className='App'>
-				<div className='form'>
-					<Header
-						handleClick={ this.props.toggleShowAddFrom }
-						isActive={ this.props.showAddForm }
-					/>
-					<BodyContainer />
+				<div>
+					<div className='form'>
+						<Header
+							handleClick={ this.props.toggleShowAddFrom }
+							isActive={ this.props.showAddForm }
+						/>
+						<BodyContainer />
+					</div>
+					<DevTools />
 				</div>
-				<DevTools />
 			</MuiThemeProvider>
 		);
 	}
