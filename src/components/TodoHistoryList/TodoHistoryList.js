@@ -9,12 +9,13 @@ import { observer, inject } from 'mobx-react';
 
 @observer
 class TodoHistoryList extends Component {
+	//todo handle history fetch
 	componentWillMount () {
 		const { fetchTodoHistory, todoId } = this.props;
 		fetchTodoHistory(todoId);
 	}
 
-	renderTodoHistory () {
+	renderTodoHistory = () => {
 		const { todoHistory } = this.props;
 		if (todoHistory.length) {
 			return todoHistory.map((item, index) => {
@@ -23,12 +24,12 @@ class TodoHistoryList extends Component {
 		} else {
 			return <div>No history yet</div>;
 		}
-	}
+	};
 
 	render () {
 		return (
 			<div className={ `history` }>
-				{ this.renderTodoHistory.call(this) }
+				{ this.renderTodoHistory() }
 			</div>
 		);
 	}

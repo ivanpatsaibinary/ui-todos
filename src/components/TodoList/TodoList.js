@@ -1,44 +1,30 @@
 import React, { Component } from 'react';
-import Todo from '../Todo/Todo';
 import { observer, inject } from 'mobx-react';
-import { FloatingActionButton } from 'material-ui';
-import Loop from 'material-ui/svg-icons/av/loop';
+import TodoContainer from '../../containers/TodoContainer/TodoContainer';
 
 @inject((allStores) => ({
-	TodoStore: allStores.TodoStore,
-	setRange: allStores.TodoStore.setRange
+	activeTodoId: allStores.TodoStore.activeTodoId,
+	todos: allStores.TodoStore.todos
 }))
 
 @observer
 class TodoList extends Component {
-	constructor (props) {
-		super(props);
-		this.renderTodos = this.renderTodos.bind(this);
-	}
 
-	componentWillMount () {
-		this.props.TodoStore.fetchTodos();
-	}
-
-	renderTodos () {
-		const { todos } = this.props.TodoStore;
+	renderTodos = () => {
+		const { todos, activeTodoId } = this.props;
 		return todos.map((item, index) => {
-			return <Todo key={ index } data={ item } />;
+			return <TodoContainer
+				key={ index }
+				data={ item }
+				isActive={ item.id === activeTodoId }
+			/>;
 		});
-	}
+	};
 
 	render () {
-		const { setRange } = this.props;
 		return (
 			<div className='todo-list-container'>
 				{ this.renderTodos() }
-				<FloatingActionButton
-					onClick={ () => {
-						setRange();
-					} }
-				>
-					<Loop />
-				</FloatingActionButton>
 			</div>
 		);
 	}

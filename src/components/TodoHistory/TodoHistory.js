@@ -1,16 +1,16 @@
 //todo update todohistory after todo update
 //todo remove todoHistory after click on other todo item
 import React, { Component } from 'react';
-import IconButton from 'material-ui/IconButton';
-import Delete from 'material-ui/svg-icons/action/delete';
 import { observer, inject } from 'mobx-react';
+import { observable } from 'mobx';
 
 import './todoHistory.css';
 import { Divider } from 'material-ui';
+import DeleteButton from '../DeleteButton';
 
 @inject((allStores) => ({
 		setActiveHistoryId: allStores.TodoHistoryStore.setActiveHistoryId,
-		deleteTodoHistory: allStores.TodoHistoryStore.deleteTodoHistory,
+		deleteTodoHistoryItem: allStores.TodoHistoryStore.deleteTodoHistoryItem,
 		btnDisabled: allStores.TodoHistoryStore.btnDisabled,
 		activeHistoryId: allStores.TodoHistoryStore.activeHistoryId
 	}
@@ -18,27 +18,29 @@ import { Divider } from 'material-ui';
 
 @observer
 class TodoHistory extends Component {
+
+	@observable btnEnabled = true;
+
+	onDeleteTodoHistory = () => {
+		const { setActiveHistoryId, deleteTodoHistoryItem, data: { id } } = this.props;
+		this.btnEnabled = false;
+		setActiveHistoryId(id);
+		deleteTodoHistoryItem(id).then(() => this.btnEnabled = true);
+	};
+
 	render () {
-		const { data: { name, id }, data, activeHistoryId, setActiveHistoryId, deleteTodoHistory, btnDisabled } = this.props;
+		const { data: { name, id }, activeHistoryId } = this.props;
 		const isActive = activeHistoryId === id;
 		return [
 			<div key={ `history-item-${id}` } className='history-item-container'>
 				<div className='text'>
 					{ name }
 				</div>
-				<div className='delete-icon-container'>
-					<IconButton
-						onClick={ () => {
-							setActiveHistoryId(id);
-							deleteTodoHistory(id);
-							console.log(activeHistoryId, id, btnDisabled, data);
-
-						} }
-						disabled={ btnDisabled && isActive }
-					>
-						<Delete color='#FAFAFF' />
-					</IconButton>
-				</div>
+				<DeleteButton
+					isActive={ isActive }
+					handleClick={ this.onDeleteTodoHistory }
+					isButtonEnabled={ this.btnEnabled }
+				/>
 			</div>,
 			<Divider key={ `history-divider-${id}` } />
 		];
