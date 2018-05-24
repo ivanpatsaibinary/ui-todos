@@ -1,0 +1,35 @@
+.todo-list-container > div:last-child {
+	margin-top: 15px;
+}
+
+.item {
+	margin-top: 5px;
+}
+
+.item > .latest-data > div {
+	width: auto !important;
+}
+
+.latest-data {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	margin-bottom: 5px;
+	/*justify-content: space-between;*/
+}
+
+.label-text {
+	flex-basis: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.label-text > p {
+	cursor: pointer;
+}
+
+.delete-icon-container {
+	align-self: stretch;
+	background-color: #EF5350 !important;
+}
